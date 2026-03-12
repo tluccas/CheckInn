@@ -13,6 +13,7 @@ import { UpdateReservationStatusDto } from './dto/update-reservation-status.dto.
 import { ReservationResponseDto } from './dto/reservation-response.dto.js';
 import { ReservationStatus } from './enums/status.enum.js';
 import { HotelsService } from '../hotels/hotels.service.js';
+import { MailService } from '../mail/mail.service.js';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto.js';
 import { PaginatedResponseDto } from '../../common/dto/paginated-response.dto.js';
 
@@ -24,6 +25,7 @@ export class ReservationsService {
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
     private readonly hotelsService: HotelsService,
+    private readonly mailService: MailService,
   ) {}
 
   async create(
@@ -63,6 +65,13 @@ export class ReservationsService {
 
     const saved = await this.reservationRepository.save(reservation);
     this.logger.log(`Reserva criada: ${saved.id} no hotel ${hotel.name}`);
+
+    // Agendar lembrete 1 dia antes do check-in
+    await this.mailService.schedulePreCheckinReminder(
+      saved.responsibleEmail,
+      saved.responsibleName,
+      saved.checkInDate,
+    );
 
     const full = await this.reservationRepository.findOne({
       where: { id: saved.id },
@@ -171,6 +180,14 @@ export class ReservationsService {
     this.logger.log(
       `Status da reserva ${updated.id} alterado para ${updated.status}`,
     );
+
+    // Simulação de envio de e-mail de check-in via fila
+    if (updated.status === ReservationStatus.CHECKED_IN) {
+      await this.mailService.scheduleWelcomeEmail(
+        updated.responsibleEmail,
+        updated.responsibleName,
+      );
+    }
 
     const full = await this.findById(updated.id);
     return this.toResponseDto(full);
