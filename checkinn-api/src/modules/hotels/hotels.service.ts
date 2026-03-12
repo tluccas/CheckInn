@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException, Logger, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Logger,
+  Inject,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
@@ -8,7 +14,7 @@ import { CreateHotelRequestDto } from './dto/create-hotel-request.dto.js';
 import { HotelResponseDto } from './dto/hotel-response.dto.js';
 
 const HOTELS_CACHE_KEY = 'hotels:all';
-const HOTELS_CACHE_TTL = 120;
+const HOTELS_CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
 @Injectable()
 export class HotelsService {
@@ -22,14 +28,28 @@ export class HotelsService {
   ) {}
 
   async create(dto: CreateHotelRequestDto): Promise<HotelResponseDto> {
-    const hotel = this.hotelRepository.create(dto);
-    const saved = await this.hotelRepository.save(hotel);
-    this.logger.log(`Hotel criado: ${saved.name} (${saved.id})`);
+    try {
+      const hotel = this.hotelRepository.create(dto);
+      const saved = await this.hotelRepository.save(hotel);
+      this.logger.log(`Hotel criado: ${saved.name} (${saved.id})`);
 
-    await this.cacheManager.del(HOTELS_CACHE_KEY);
-    this.logger.debug('Cache Miss: Hotel armazenado no cache');
+      await this.cacheManager.del(HOTELS_CACHE_KEY);
+      this.logger.debug(
+        'Cache Invalidation: Cache de hoteis invalidado apos criacao',
+      );
 
-    return this.toResponseDto(saved);
+      return this.toResponseDto(saved);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'code' in error) {
+        if (error.code === '23505') {
+          throw new ConflictException(
+            'Já existe um hotel cadastrado com estes dados.',
+          );
+        }
+      }
+      this.logger.error('Erro inesperado ao salvar hotel', error);
+      throw error;
+    }
   }
 
   async findAll(): Promise<HotelResponseDto[]> {
