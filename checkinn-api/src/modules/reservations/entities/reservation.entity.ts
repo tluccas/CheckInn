@@ -10,13 +10,13 @@ import {
 } from 'typeorm';
 import { Hotel } from '../../hotels/entities/hotel.entity.js';
 import { Guest } from '../../guests/entities/guest.entity.js';
+import { ReservationStatus } from '../enums/status.enum.js';
 
 @Entity('reservations')
 export class Reservation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @ManyToOne equivale a @ManyToOne + @JoinColumn no JPA
   @ManyToOne(() => Hotel, (hotel) => hotel.reservations, {
     onDelete: 'CASCADE',
   })
@@ -42,14 +42,14 @@ export class Reservation {
   responsiblePhone: string;
 
   @Column({ name: 'room_count', type: 'int', default: 1 })
-  roomCount: number; // Quantidade de quartos reservados
+  roomCount: number; // Qtd de quartos reservados
 
   @Column({
-    type: 'varchar',
-    length: 20,
-    default: 'confirmed',
+    type: 'enum',
+    enum: ReservationStatus,
+    default: ReservationStatus.CONFIRMED,
   })
-  status: string; // confirmed, checked_in, checked_out, cancelled
+  status: ReservationStatus;
 
   @Column({ type: 'text', nullable: true })
   notes: string;
