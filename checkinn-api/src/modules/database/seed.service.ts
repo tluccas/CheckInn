@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from '../auth/entities/user.entity.js';
 
@@ -11,6 +11,7 @@ export class SeedService implements OnModuleInit {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async onModuleInit() {
@@ -18,24 +19,44 @@ export class SeedService implements OnModuleInit {
   }
 
   private async seedAdminUser() {
-    const existingAdmin = await this.userRepository.findOne({
-      where: { username: 'admin' },
-    });
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    if (existingAdmin) {
-      this.logger.log('Usuário admin já existe, seed ignorado');
-      return;
+    try {
+      const existingAdmin = await queryRunner.manager.findOne(User, {
+        where: { username: 'admin' },
+      });
+
+      if (existingAdmin) {
+        this.logger.log('Usuário admin já existe, seed ignorado');
+        await queryRunner.rollbackTransaction();
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash('123456', 10);
+
+      const admin = queryRunner.manager.create(User, {
+        username: 'admin',
+        password: hashedPassword,
+        isActive: true,
+      });
+
+      await queryRunner.manager.save(admin);
+      await queryRunner.commitTransaction();
+
+      this.logger.log(
+        '[SEEDER] Usuário admin criado com sucesso (admin/123456)',
+      );
+    } catch (error: unknown) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(
+        '[SEEDER] Erro ao criar usuário admin:',
+        (error as Error).message,
+      );
+      throw error;
+    } finally {
+      await queryRunner.release();
     }
-
-    const hashedPassword = await bcrypt.hash('123456', 10);
-
-    const admin = this.userRepository.create({
-      username: 'admin',
-      password: hashedPassword,
-      isActive: true,
-    });
-
-    await this.userRepository.save(admin);
-    this.logger.log('[SEEDER] Usuário admin criado com sucesso (admin/123456)');
   }
 }

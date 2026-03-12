@@ -35,8 +35,14 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
         database: configService.get<string>('database.name'),
 
         autoLoadEntities: true,
-        synchronize: true, // Apenas nessa ocasião por se tratar de um teste técnico.
-        logging: false,
+        // Synchronize apenas em dev
+        synchronize:
+          process.env.NODE_ENV === 'development' ||
+          process.env.TYPEORM_SYNCHRONIZE === 'true',
+        // Migrations em produção
+        migrationsRun: process.env.NODE_ENV === 'production',
+        migrations: ['dist/src/migrations/*{.ts,.js}'],
+        logging: process.env.NODE_ENV === 'development',
       }),
     }),
 
