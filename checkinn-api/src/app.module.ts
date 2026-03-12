@@ -15,6 +15,7 @@ import { DatabaseModule } from './modules/database/database.module';
 import { RedisCacheModule } from './modules/cache/redis-cache.module';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     ReservationsModule,
     GuestsModule,
     DatabaseModule,
+    MailModule,
   ],
   providers: [
     {

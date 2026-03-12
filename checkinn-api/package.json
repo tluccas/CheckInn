@@ -26,6 +26,7 @@
     "db:create": "node -e \"const { Client } = require('pg'); const client = new Client({ host: 'localhost', port: 5432, user: 'checkinn', password: 'checkinn_secret' }); client.connect().then(() => client.query('SELECT 1 FROM pg_database WHERE datname = \\'checkinn_db\\'').then(res => res.rowCount === 0 ? client.query('CREATE DATABASE checkinn_db') : null)).then(() => console.log('Database ready')).catch(err => console.log('Database might already exist:', err.message)).finally(() => client.end());\""
   },
   "dependencies": {
+    "@nestjs/bullmq": "^11.0.4",
     "@nestjs/cache-manager": "^3.1.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
@@ -33,8 +34,10 @@
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.6",
     "@nestjs/typeorm": "^11.0.0",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.71.0",
     "cache-manager": "^7.2.8",
     "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
@@ -45,6 +48,7 @@
     "redis": "^5.11.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.28"
   },
   "devDependencies": {
