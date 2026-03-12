@@ -6,13 +6,7 @@ import { Reservation } from './entities/reservation.entity';
 import { HotelsModule } from '../hotels/hotels.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Reservation]),
-    // Importa o HotelsModule para acessar o HotelsService
-    // No Spring, a DI é global. No NestJS, cada módulo tem seu escopo.
-    // Você PRECISA importar o módulo que exporta o service que quer usar.
-    HotelsModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Reservation]), HotelsModule],
   controllers: [ReservationsController],
   providers: [ReservationsService],
   exports: [ReservationsService],
