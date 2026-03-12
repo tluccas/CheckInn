@@ -17,7 +17,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm:migration:create": "typeorm migration:create src/migrations/",
+    "typeorm:migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/ -d src/config/typeorm.config.ts",
+    "typeorm:migration:run": "typeorm-ts-node-commonjs migration:run -d src/config/typeorm.config.ts",
+    "typeorm:migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/typeorm.config.ts",
+    "db:create": "node -e \"const { Client } = require('pg'); const client = new Client({ host: 'localhost', port: 5432, user: 'checkinn', password: 'checkinn_secret' }); client.connect().then(() => client.query('CREATE DATABASE IF NOT EXISTS checkinn_db')).then(() => console.log('Database created')).catch(console.error).finally(() => client.end());\""
   },
   "dependencies": {
     "@nestjs/cache-manager": "^3.1.0",
