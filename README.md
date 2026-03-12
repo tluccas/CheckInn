@@ -104,7 +104,7 @@ O projeto foi **totalmente containerizado com Docker**, então você não precis
 **1. Clone o repositório:**
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/tluccas/CheckInn.git
 cd CheckInn/
 ```
 
@@ -125,6 +125,7 @@ docker compose up --build
 | -------- | --------------------- |
 | Frontend | http://localhost:80   |
 | API REST | http://localhost:3000 |
+| API Doc  | http://localhost:3000/api/docs |
 
 **4. Credenciais padrão (criadas automaticamente pelo Seed):**
 
