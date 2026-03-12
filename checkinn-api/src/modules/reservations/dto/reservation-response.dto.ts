@@ -1,4 +1,5 @@
 import { HotelResponseDto } from '../../hotels/dto/hotel-response.dto.js';
+import { ReservationStatus } from '../enums/status.enum.js';
 
 export class ReservationResponseDto {
   id: string;
@@ -10,7 +11,7 @@ export class ReservationResponseDto {
   responsibleEmail: string;
   responsiblePhone: string;
   roomCount: number;
-  status: string;
+  status: ReservationStatus;
   notes: string;
   guestCount?: number;
   createdAt: Date;
