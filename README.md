@@ -11,7 +11,10 @@ Fala! Agradeço por estar avaliando esse projeto, logo abaixo você irá encontr
 
 - **Back-end:** `API REST` desenvolvida com **`Nest.js`**
 - **Front-end(SPA):** **`React.js`** usando **`Vite`**.
+
+Também trabalhei com **Docker** e **CI** com **Github Actions**
 - **Infra:** **`Docker`** tudo containerizado e pronto com ajustes para evitar conflitos entre portas.
+- **CI:** Verificação de testes unitários com **Jest** do backend integrados com GitHub Actions.
 
 Pode ver a lista de tecnologias [AQUI](#tecnologias-e-ferramentas)
 
@@ -142,11 +145,11 @@ docker compose down
 > docker compose down -v
 > ```
 
-## Tecnologias e Ferramentas
+## 🧰 Tecnologias e Ferramentas
 
 Aqui quero falar um pouco sobre as tecnologias e ferramentas utilizadas no projeto:
 
-### Backend:
+### 🔨 Backend:
 
 O backend foi desenvolvido utilizando arquitetura modular baseada no framework NestJS, priorizando organização, escalabilidade e separação de responsabilidades.
 
@@ -167,7 +170,7 @@ Outras bibliotecas relevantes
 
 - **Jest:** testes automatizados.
 
-### Frontend
+### 💻 Frontend
 
 O frontend foi desenvolvido utilizando **React** com **Vite**, priorizando velocidade de desenvolvimento e simplicidade de configuração.
 
@@ -186,4 +189,4 @@ O frontend foi desenvolvido utilizando **React** com **Vite**, priorizando veloc
 - Processamento assíncrono de notificações para evitar bloqueio de requisições HTTP.
 - UI trabalhada insiprando-se na identidade visual da Economy Software.
 
-## Preview do Sistema
+## ☕ Preview do Sistema
