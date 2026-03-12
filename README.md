@@ -95,6 +95,9 @@ Quando falo sobre escalabilidade gosto sempre de focar em 3 pontos que acho muit
 
 O projeto foi **totalmente containerizado com Docker**, então você não precisa instalar Node.js, PostgreSQL, Redis ou qualquer outra dependência na sua máquina. Apenas **Docker** e **Docker Compose** são necessários.
 
+> [!TIP]
+> Não é preciso configurar nenhuma credencial já está tudo configurado para rodar apenas subindo os containers com docker compose 
+
 ### Pré-requisitos
 
 - [Docker](https://docs.docker.com/get-docker/) instalado e rodando.
