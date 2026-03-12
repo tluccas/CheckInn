@@ -8,9 +8,9 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { Hotel } from '../../hotels/entities/hotel.entity.js';
-import { Guest } from '../../guests/entities/guest.entity.js';
-import { ReservationStatus } from '../enums/status.enum.js';
+import { Hotel } from '../../hotels/entities/hotel.entity';
+import { Guest } from '../../guests/entities/guest.entity';
+import { ReservationStatus } from '../enums/status.enum';
 
 @Entity('reservations')
 export class Reservation {

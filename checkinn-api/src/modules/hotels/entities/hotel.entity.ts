@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Reservation } from '../../reservations/entities/reservation.entity.js';
+import { Reservation } from '../../reservations/entities/reservation.entity';
 
 @Entity('hotels')
 export class Hotel {

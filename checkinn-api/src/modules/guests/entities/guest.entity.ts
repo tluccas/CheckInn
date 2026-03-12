@@ -7,8 +7,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Reservation } from '../../reservations/entities/reservation.entity.js';
-import { DocumentType } from '../enums/document-type.enum.js';
+import { Reservation } from '../../reservations/entities/reservation.entity';
+import { DocumentType } from '../enums/document-type.enum';
 
 @Entity('guests')
 export class Guest {
