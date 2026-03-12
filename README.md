@@ -16,7 +16,7 @@ Também trabalhei com **Docker** e **CI** com **Github Actions**
 - **Infra:** **`Docker`** tudo containerizado e pronto com ajustes para evitar conflitos entre portas.
 - **CI:** Verificação de testes unitários com **Jest** do backend integrados com GitHub Actions.
 
-Pode ver a lista de tecnologias [AQUI](#tecnologias-e-ferramentas)
+Pode ver a lista de tecnologias [AQUI](#🧰-tecnologias-e-ferramentas)
 
 ## 🧑‍💻 Respostas para perguntas finais
 
